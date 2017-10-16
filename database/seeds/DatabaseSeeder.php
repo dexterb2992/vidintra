@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
         \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             
         $this->call(UsersTableSeeder::class);
-        $this->call(RecipesTableSeeder::class);
         $this->call(VideoIntrosTableSeeder::class);
 
         // supposed to only apply to a single connection and reset it's self

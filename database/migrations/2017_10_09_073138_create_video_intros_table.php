@@ -19,7 +19,7 @@ class CreateVideoIntrosTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->text('slug')->nullable();
+            $table->text('name')->nullable();
 
             // Video Options
             $table->string('video_source')->nullable();
