@@ -436,8 +436,8 @@ module.exports = {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["b"] = get;
 /* harmony export (immutable) */ __webpack_exports__["a"] = post;
-/* unused harmony export del */
-/* harmony export (immutable) */ __webpack_exports__["c"] = interceptors;
+/* harmony export (immutable) */ __webpack_exports__["c"] = del;
+/* harmony export (immutable) */ __webpack_exports__["d"] = interceptors;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_auth__ = __webpack_require__(7);
@@ -22831,7 +22831,7 @@ var nprogress = new __WEBPACK_IMPORTED_MODULE_3_vue_nprogress___default.a();
 		var _this = this;
 
 		// global error http handler
-		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* interceptors */])(function (err) {
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["d" /* interceptors */])(function (err) {
 			nprogress.done();
 			if (err.response.status === 401) {
 				__WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].remove();
@@ -23399,6 +23399,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Tab_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_Tab_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Tabs_vue__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Tabs_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_Tabs_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__helpers_helper__ = __webpack_require__(110);
 //
 //
 //
@@ -23497,6 +23498,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -23540,21 +23542,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["b" /* get */])(this.initializeURL).then(function (res) {
             __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(_this.$data, 'form', res.data.form);
 
-            if (res.data.form.video_source != "" && res.data.form.video_source != null) {
-                _this.videoBaseSource = 'Upload';
-                console.log(_this.form.video_source);
-            }
+            if (_this.$route.meta.mode == 'edit') {
+                if (res.data.form.video_source != "" && res.data.form.video_source != null) {
+                    _this.videoBaseSource = 'Upload';
+                    console.log(_this.form.video_source);
+                }
 
-            if (res.data.form.youtube_id != "" && res.data.form.youtube_id != null) {
-                _this.videoBaseSource = 'Youtube';
-            }
+                if (res.data.form.youtube_id != "" && res.data.form.youtube_id != null) {
+                    _this.videoBaseSource = 'Youtube';
+                }
+            } else {
+                if (res.data.form.bottom_text_left == null) {
+                    res.data.form.bottom_text_left = '© Copyright 2017 – John Doe';
+                }
 
-            if (res.data.form.bottom_text_left == null) {
-                res.data.form.bottom_text_left = '© Copyright 2017 – John Doe';
-            }
-
-            if (res.data.form.bottom_text_right == null) {
-                res.data.form.bottom_text_right = '1-800-555-9274   your@email.com   <a href="http://facebook.com/my-fb-acct">Facebook</a>  <a href="http://twitter.com/my-twitter-acct">Twitter</a>';
+                if (res.data.form.bottom_text_right == null) {
+                    res.data.form.bottom_text_right = '1-800-555-9274   your@email.com   <a href="http://facebook.com/your-fb-acct">Facebook</a>  <a href="http://twitter.com/your-twitter-acct">Twitter</a>';
+                }
             }
 
             CKEDITOR.replace('bottom_text_right');
@@ -23570,16 +23574,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.form.bottom_text_right = CKEDITOR.instances['bottom_text_right'].getData();
             this.form.bottom_text_left = CKEDITOR.instances['bottom_text_left'].getData();
-            console.log(this.form);
+
             var form = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__helpers_form__["a" /* toMultiPartedForm */])(this.form, this.$route.meta.mode);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* post */])(this.storeURL, form).then(function (res) {
                 if (res.data.saved) {
                     __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess(res.data.message);
-                    // this.$router.push(`/video-intros/${res.data.id}`)
-                    // window.location.href="/video-intros/"+res.data.id;
-                    $("html, body").animate({
-                        scrollTop: 0
-                    }, 600);
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__helpers_helper__["a" /* scrollToTop */])();
                 }
                 _this2.isProcessing = false;
             }).catch(function (err) {
@@ -23588,6 +23588,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
                 _this2.isProcessing = false;
             });
+        },
+        validateYoutubeId: function validateYoutubeId() {
+            var youtubeId = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__helpers_helper__["b" /* getYoutubeId */])(this.form.youtube_id);
+
+            if (youtubeId == false) {
+                this.error.youtube_id = ['It must be a valid Youtube URL'];
+                youtubeId = null;
+            } else {
+                this.error.splice(this.error.indexOf('youtube_id', 1));
+            }
+
+            this.form.youtube_id = youtubeId;
         }
     }
 });
@@ -23600,6 +23612,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_api__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_helper__ = __webpack_require__(110);
 //
 //
 //
@@ -23613,6 +23627,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -23626,6 +23646,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* get */])('/api/video-intros').then(function (res) {
             _this.intros = res.data.intros;
+        });
+    },
+    mounted: function mounted() {
+        this.$on('delete', function (key) {
+            var _this2 = this;
+
+            if (confirm("Are you sure to delete this?")) {
+                var id = this.intros[key].id;
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["c" /* del */])('/api/video-intros/' + id).then(function (res) {
+                    if (res.data.deleted) {
+                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess("Successfully deleted.");
+                        _this2.intros.splice(key, 1);
+                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__helpers_helper__["a" /* scrollToTop */])();
+                    }
+                });
+            }
         });
     }
 });
@@ -23745,7 +23781,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 	mode: 'history',
-	routes: [{ path: '/', component: __WEBPACK_IMPORTED_MODULE_5__views_VideoIntro_Index_vue___default.a }, { path: '/video-intros/create', component: __WEBPACK_IMPORTED_MODULE_6__views_VideoIntro_Form_vue___default.a, meta: { mode: 'create' } }, { path: '/video-intros/:id/edit', component: __WEBPACK_IMPORTED_MODULE_6__views_VideoIntro_Form_vue___default.a, meta: { mode: 'edit' } }, { path: '/video-intros/:id' }, { path: '/register', component: __WEBPACK_IMPORTED_MODULE_3__views_Auth_Register_vue___default.a }, { path: '/login', component: __WEBPACK_IMPORTED_MODULE_2__views_Auth_Login_vue___default.a }, { path: '/not-found', component: __WEBPACK_IMPORTED_MODULE_4__views_NotFound_vue___default.a }, { path: '*', component: __WEBPACK_IMPORTED_MODULE_4__views_NotFound_vue___default.a }]
+	routes: [{ path: '/video-intros/create', component: __WEBPACK_IMPORTED_MODULE_6__views_VideoIntro_Form_vue___default.a, meta: { mode: 'create' } }, { path: '/video-intros/:id/edit', component: __WEBPACK_IMPORTED_MODULE_6__views_VideoIntro_Form_vue___default.a, meta: { mode: 'edit' } }, { path: '/video-intros/:id' }, { path: '/', component: __WEBPACK_IMPORTED_MODULE_5__views_VideoIntro_Index_vue___default.a }, { path: '/register', component: __WEBPACK_IMPORTED_MODULE_3__views_Auth_Register_vue___default.a }, { path: '/login', component: __WEBPACK_IMPORTED_MODULE_2__views_Auth_Login_vue___default.a }, { path: '/not-found', component: __WEBPACK_IMPORTED_MODULE_4__views_NotFound_vue___default.a }, { path: '*', component: __WEBPACK_IMPORTED_MODULE_4__views_NotFound_vue___default.a }]
 });
 
 /* harmony default export */ __webpack_exports__["a"] = (router);
@@ -27219,13 +27255,14 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "recipe__list"
-  }, _vm._l((_vm.intros), function(intro) {
+  }, _vm._l((_vm.intros), function(intro, key) {
     return _c('div', {
       staticClass: "recipe__item"
     }, [_c('router-link', {
       staticClass: "recipe__inner",
       attrs: {
-        "to": ("/video-intros/" + (intro.id) + "/edit")
+        "to": ("/video-intros/" + (intro.id) + "/edit"),
+        "id": 'item_' + key
       }
     }, [(intro.youtube_id != null && intro.youtube_id != '') ? _c('iframe', {
       attrs: {
@@ -27246,7 +27283,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     })]) : _vm._e(), _vm._v(" "), _c('p', {
       staticClass: "recipe__name"
-    }, [_vm._v(_vm._s(intro.slug))])])], 1)
+    }, [_vm._v(_vm._s(intro.name))])]), _vm._v(" "), _c('a', {
+      staticClass: "btn btn-sm btn-danger btn-delete pull-right",
+      on: {
+        "click": function($event) {
+          _vm.$emit('delete', key)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "glyphicon glyphicon-remove"
+    })])], 1)
   }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -27366,7 +27412,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Youtube")])])]), _vm._v(" "), (_vm.videoBaseSource == 'Youtube') ? _c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Enter youtube URL/Video ID: ")]), _vm._v(" "), _c('input', {
+  }, [_c('label', [_vm._v("Enter youtube URL: ")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -27381,6 +27427,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.form.youtube_id)
     },
     on: {
+      "change": _vm.validateYoutubeId,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.form.youtube_id = $event.target.value
@@ -27424,29 +27471,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "error__control"
   }, [_vm._v(_vm._s(_vm.error.url_to_redirect[0]))]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Slug")]), _vm._v(" "), _c('input', {
+  }, [_c('label', [_vm._v("Name")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.form.slug),
-      expression: "form.slug"
+      value: (_vm.form.name),
+      expression: "form.name"
     }],
     staticClass: "form-control",
     attrs: {
       "type": "text"
     },
     domProps: {
-      "value": (_vm.form.slug)
+      "value": (_vm.form.name)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.form.slug = $event.target.value
+        _vm.form.name = $event.target.value
       }
     }
-  }), _vm._v(" "), (_vm.error.slug) ? _c('small', {
+  }), _vm._v(" "), (_vm.error.name) ? _c('small', {
     staticClass: "error__control"
-  }, [_vm._v(_vm._s(_vm.error.slug[0]))]) : _vm._e()]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.error.name[0]))]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', [_vm._v("Logo")]), _vm._v(" "), _c('div', {
     staticClass: "recipe__image"
@@ -30793,6 +30840,54 @@ module.exports = g;
 __webpack_require__(17);
 module.exports = __webpack_require__(18);
 
+
+/***/ }),
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (immutable) */ __webpack_exports__["b"] = getYoutubeId;
+/* harmony export (immutable) */ __webpack_exports__["a"] = scrollToTop;
+/* unused harmony export isValidURL */
+function getYoutubeId(url) {
+    if (url.length == 11 && !isValidURL(url)) {
+        return url;
+    }
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    return match && match[7].length == 11 ? match[7] : false;
+}
+
+function scrollToTop() {
+    $("html, body").animate({
+        scrollTop: 0
+    }, 600);
+}
+
+function isValidURL(str) {
+    var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+    if (!regex.test(str)) {
+        alert("Please enter valid URL.");
+        return false;
+    } else {
+        return true;
+    }
+}
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(8)))
 
 /***/ })
 /******/ ]);

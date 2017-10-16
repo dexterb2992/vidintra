@@ -14,7 +14,7 @@ class VideoIntroController extends Controller
             ->except(['index', 'show']);
 
         $this->rules =  [
-            'slug' => 'required',
+            'name' => 'required',
             'action_after_end' => 'required',
             'url_to_redirect' => 'required|url',
             'skipintro_is_enabled' => 'required',
@@ -30,7 +30,7 @@ class VideoIntroController extends Controller
     {
         $user = auth()->guard('api')->user();
         $intros = $user->videoIntros()->orderBy('created_at', 'desc')
-            ->get(['id', 'slug', 'video_source', 'youtube_id']);
+            ->get(['id', 'name', 'video_source', 'youtube_id']);
         
         return response()
             ->json([
@@ -220,6 +220,10 @@ class VideoIntroController extends Controller
 
     public function destroy(VideoIntro $videoIntro)
     {
-        //
+        $res = $videoIntro->delete();
+
+        return response()->json([
+            'deleted' => $res
+        ]);
     }
 }

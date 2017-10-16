@@ -64,6 +64,7 @@ class AuthController extends Controller
 
             return response()
                 ->json([
+                    'user_name' => $user->name,
                     'authenticated' => true,
                     'api_token' => $user->api_token,
                     'user_id' => $user->id

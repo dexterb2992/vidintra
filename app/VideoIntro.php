@@ -16,7 +16,7 @@ class VideoIntro extends Model
     public static function form()
     {
         return [
-            'slug' => '',
+            'name' => '',
             'video_source' => '',
             'youtube_id' => '',
             'action_after_end' => '',

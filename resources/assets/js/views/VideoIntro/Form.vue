@@ -19,8 +19,8 @@
                                 </select>
                             </div>
                             <div class="form-group" v-if="videoBaseSource=='Youtube'">
-                                <label>Enter youtube URL/Video ID: </label>
-                                <input class="form-control" type="text" v-model="form.youtube_id">
+                                <label>Enter youtube URL: </label>
+                                <input class="form-control" type="text" v-model="form.youtube_id" @change="validateYoutubeId">
                                 <small class="error__control" v-if="error.youtube_id">{{error.youtube_id[0]}}</small>
                             </div>
                             <div class="form-group" v-if="videoBaseSource=='Upload'">
@@ -32,9 +32,9 @@
                                 <small class="error__control" v-if="error.url_to_redirect">{{error.url_to_redirect[0]}}</small>
                             </div>
                             <div class="form-group">
-                                <label>Slug</label>
-                                <input type="text" v-model="form.slug" class="form-control">
-                                <small class="error__control" v-if="error.slug">{{error.slug[0]}}</small>
+                                <label>Name</label>
+                                <input type="text" v-model="form.name" class="form-control">
+                                <small class="error__control" v-if="error.name">{{error.name[0]}}</small>
 
                             </div>
                             <div class="form-group">
@@ -105,6 +105,7 @@
     import ImageUpload from '../../components/ImageUpload.vue'
     import Tab from '../../components/Tab.vue'
     import Tabs from '../../components/Tabs.vue'
+    import { getYoutubeId, scrollToTop } from '../../helpers/helper'
 
     export default {
         components: {
@@ -115,9 +116,7 @@
         },
         data() {
             return {
-                form: {
-
-                },
+                form: {},
                 error: {},
                 isProcessing: false,
                 initializeURL: `/api/video-intros/create`,
@@ -139,21 +138,23 @@
             get(this.initializeURL).then((res) => {
                 Vue.set(this.$data, 'form', res.data.form);
 
-                if(res.data.form.video_source != "" && res.data.form.video_source != null) {
-                    this.videoBaseSource = 'Upload';
-                    console.log(this.form.video_source);
-                }
+                if(this.$route.meta.mode == 'edit') {
+                    if(res.data.form.video_source != "" && res.data.form.video_source != null) {
+                        this.videoBaseSource = 'Upload';
+                        console.log(this.form.video_source);
+                    }
 
-                if(res.data.form.youtube_id != "" && res.data.form.youtube_id != null) {
-                    this.videoBaseSource = 'Youtube';
-                }
+                    if(res.data.form.youtube_id != "" && res.data.form.youtube_id != null) {
+                        this.videoBaseSource = 'Youtube';
+                    }
+                } else {
+                    if(res.data.form.bottom_text_left == null) {
+                        res.data.form.bottom_text_left = '© Copyright 2017 – John Doe';
+                    }
 
-                if(res.data.form.bottom_text_left == null) {
-                    res.data.form.bottom_text_left = '© Copyright 2017 – John Doe';
-                }
-
-                if(res.data.form.bottom_text_right == null) {
-                    res.data.form.bottom_text_right = `1-800-555-9274   your@email.com   <a href="http://facebook.com/my-fb-acct">Facebook</a>  <a href="http://twitter.com/my-twitter-acct">Twitter</a>`;
+                    if(res.data.form.bottom_text_right == null) {
+                        res.data.form.bottom_text_right = `1-800-555-9274   your@email.com   <a href="http://facebook.com/your-fb-acct">Facebook</a>  <a href="http://twitter.com/your-twitter-acct">Twitter</a>`;
+                    }
                 }
 
                 CKEDITOR.replace('bottom_text_right');
@@ -166,17 +167,13 @@
             save() {
                 this.form.bottom_text_right = CKEDITOR.instances['bottom_text_right'].getData();
                 this.form.bottom_text_left = CKEDITOR.instances['bottom_text_left'].getData();
-                console.log(this.form);
+
                 const form = toMultiPartedForm(this.form, this.$route.meta.mode)
                 post(this.storeURL, form)
                     .then((res) => {
                         if(res.data.saved) {
                             Flash.setSuccess(res.data.message)
-                            // this.$router.push(`/video-intros/${res.data.id}`)
-                            // window.location.href="/video-intros/"+res.data.id;
-                            $("html, body").animate({
-                                scrollTop: 0
-                            }, 600);
+                            scrollToTop();
                         }
                         this.isProcessing = false
                     })
@@ -186,6 +183,19 @@
                         }
                         this.isProcessing = false
                     });
+            },
+
+            validateYoutubeId() {
+                var youtubeId = getYoutubeId(this.form.youtube_id);
+
+                if (youtubeId == false) {
+                    this.error.youtube_id = ['It must be a valid Youtube URL'];
+                    youtubeId = null;
+                } else {
+                    this.error.splice(this.error.indexOf('youtube_id', 1));
+                }
+
+                this.form.youtube_id = youtubeId;
             }
         },
     }

@@ -12,10 +12,10 @@ Vue.use(VueRouter)
 const router = new VueRouter({
 	mode: 'history',
 	routes: [
-		{ path: '/', component: VideoIntroIndex },		
 		{ path: '/video-intros/create', component: VideoIntroForm, meta: { mode: 'create' } },
 		{ path: '/video-intros/:id/edit', component: VideoIntroForm, meta: { mode: 'edit' } },
 		{ path: '/video-intros/:id' },
+		{ path: '/', component: VideoIntroIndex },
 		{ path: '/register', component: Register },
 		{ path: '/login', component: Login },
 		{ path: '/not-found', component: NotFound },
