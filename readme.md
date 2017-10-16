@@ -14,7 +14,6 @@
 
 - Requires PHP 7.1.*
 - Disable `post_max_size` for Uploading of videos purposes
-
 - `enable_post_data_reading = On`
 - `post_max_size = 0`
 
