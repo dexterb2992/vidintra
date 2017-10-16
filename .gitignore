@@ -10,3 +10,4 @@ Homestead.yaml
 .project
 /.vscode
 /public/videos/*
+/public/images/*
