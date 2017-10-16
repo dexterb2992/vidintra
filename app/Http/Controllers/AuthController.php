@@ -92,6 +92,15 @@ class AuthController extends Controller
     public function licenseKeyIsValid()
     {
         //$this->data['license_key']
-        return true;
+        $client = new \GuzzleHttp\Client();
+        $url = 'http://topdogimsolutions.com/licensing/?pl_type=video_intro&licensekey='.$this->data['license_key']
+            .'&domainname='.$_SERVER['HTTP_HOST'].'&email='.$this->data['email'];
+        $res = $client->request('GET', $url);
+        $result = json_decode($res->getBody());
+        if ($result->valid == 1) {
+            return true;
+        }
+        
+        return false;
     }
 }

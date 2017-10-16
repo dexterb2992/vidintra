@@ -41,7 +41,7 @@
 
 	                    <li class="dropdown" v-if="auth">
 	                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-	                            [[User name]] <span class="caret"></span>
+	                            {{loggedUserName}} <span class="caret"></span>
 	                        </a>
 
 	                        <ul class="dropdown-menu" role="menu">
@@ -111,11 +111,13 @@
 	        });
 
 			Auth.initialize();
+			this.loggedUserName = Auth.state.user_name;
 		},
 		data() {
 			return {
 				authState: Auth.state,
-				flash: Flash.state
+				flash: Flash.state,
+				loggedUserName: ''
 			}
 		},
 		computed: {
