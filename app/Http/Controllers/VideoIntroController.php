@@ -208,9 +208,10 @@ class VideoIntroController extends Controller
 
             $input['youtube_id'] = null;
         } else {
-            if (array_key_exists("video_source", $input) &&
-                $input['video_source'] == null || $input['video_source'] == "") {
-                $input['video_source'] = null;
+            if (array_key_exists("video_source", $input)) {
+                if ($input['video_source'] == null || $input['video_source'] == "") {
+                    $input['video_source'] = null;
+                }
             }
         }
 
