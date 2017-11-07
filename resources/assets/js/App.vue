@@ -85,7 +85,7 @@
 				nprogress.done();
 				if(err.response.status === 401) {
 					Auth.remove()
-					this.$router.push(this.$router.options.base+'login')
+					this.$router.push('/login')
 				}
 
 				if(err.response.status === 500) {
@@ -93,7 +93,7 @@
 				}
 
 				if(err.response.status === 404) {
-					this.$router.push(this.$router.options.base+'not-found')
+					this.$router.push('/not-found')
 				}
 			});
 

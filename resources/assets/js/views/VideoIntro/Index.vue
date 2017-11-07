@@ -2,7 +2,7 @@
     <div>
         <div class="recipe__list">
             <div class="recipe__item" v-for="(intro, key) in intros">
-                <router-link class="recipe__inner" :to="$router.options.base+`video-intros/${intro.id}/edit`" :id="'item_'+key">
+                <router-link class="recipe__inner" :to="`/video-intros/${intro.id}/edit`" :id="'item_'+key">
                     <iframe width="298" height="240" :src="`//youtube.com/embed/${intro.youtube_id}`" v-if="intro.youtube_id != null && intro.youtube_id != ''"></iframe>
                     <video v-if="intro.video_source != '' && intro.video_source != null" width="298" height="240" controls>
                         <source :src="$router.options.base+`videos/${intro.video_source}`" type="video/mp4">
