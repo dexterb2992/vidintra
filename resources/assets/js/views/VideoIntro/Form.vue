@@ -34,9 +34,9 @@
                                 </select>
                                 <small class="error__control" v-if="error.action_after_end">{{error.action_after_end[0]}}</small>
                             </div>
-                            <div class="form-group" v-if="form.action_after_end == 'redirect'">
+                            <div class="form-group">
                                 <label>URL to Redirect</label>
-                                <input type="url" v-model="form.url_to_redirect" class="form-control" placeholder="Redirect URL after the video ends">
+                                <input type="url" v-model="form.url_to_redirect" class="form-control" placeholder="URL to Redirect">
                                 <small class="error__control" v-if="error.url_to_redirect">{{error.url_to_redirect[0]}}</small>
                             </div>
                             <div class="form-group">

@@ -15,6 +15,7 @@ class VideoIntroController extends Controller
 
         $this->rules =  [
             'name' => 'required',
+            'url_to_redirect' => 'required|url',
             'action_after_end' => 'required',
             'skipintro_is_enabled' => 'required',
         ];
@@ -50,12 +51,6 @@ class VideoIntroController extends Controller
             $this->rules['skipintro_text'] = 'required';
         } else {
             unset($this->rules['skipintro_text']);
-        }
-
-        if ($request->action_after_end == 'redirect') {
-            $this->rules['url_to_redirect'] = 'required|url';
-        } else {
-            unset($this->rules['url_to_redirect']);
         }
 
         $this->validate($request, $this->rules);
@@ -162,12 +157,6 @@ class VideoIntroController extends Controller
             $this->rules['skipintro_text'] = 'required';
         } else {
             unset($this->rules['skipintro_text']);
-        }
-
-        if ($request->action_after_end == 'redirect') {
-            $this->rules['url_to_redirect'] = 'required|url';
-        } else {
-            unset($this->rules['url_to_redirect']);
         }
 
         $this->validate($request, $this->rules);
