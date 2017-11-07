@@ -16,7 +16,7 @@
 
 	                <!-- Branding Image -->
 	                <div class="navbar-brand">
-	                    <router-link to="/">Video Intro</router-link>
+	                    <router-link to="/">VidIntra</router-link>
 	                </div>
 	            </div>
 
