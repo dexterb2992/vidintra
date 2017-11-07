@@ -1,9 +1,9 @@
 <template>
 	<div class="image__preview" v-if="image">
 		<img :src="image">
-		<button class="btn btn-danger image__close btn-sm" @click="close">
+		<a href="javascript:void(0)" class="btn btn-danger image__close btn-sm" @click="close">
 			&times;
-		</button>
+		</a>
 	</div>
 </template>
 <script type="text/javascript">
