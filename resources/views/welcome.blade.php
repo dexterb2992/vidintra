@@ -9,15 +9,15 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <link rel="stylesheet" type="text/css" href="{{ asset(mix('css/app.css')) }}">
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
     </head>
     <body>
         <script>
             window.base_url = "{{ env('VUE_BASE_URL') }}";
         </script>
         <div id="root"></div>
-        <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
+        <script src="//cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
         <script type="text/javascript" src="{{ asset(mix('js/app.js')) }}"></script>
     </body>
 </html>
