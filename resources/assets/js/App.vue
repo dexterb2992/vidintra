@@ -29,10 +29,10 @@
 	                <!-- Right Side Of Navbar -->
 	                <ul class="nav navbar-nav navbar-right">
 	                    <li v-if="guest">
-	                        <router-link to="/login">Login</router-link>
+	                        <router-link :to="$router.options.base+'login'">Login</router-link>
 	                    </li>
 	                    <li v-if="guest">
-	                        <router-link to="/register">Register</router-link>
+	                        <router-link :to="$router.options.base+'register'">Register</router-link>
 	                    </li>
 	                    
 	                    <li class="navbar__item"  v-if="auth">
@@ -79,12 +79,13 @@
 	export default {
 		nprogress,
 		created() {
+			console.log("base_url: "+window.base_url);
 			// global error http handler
 			interceptors((err) => {
 				nprogress.done();
 				if(err.response.status === 401) {
 					Auth.remove()
-					this.$router.push(this.$router.options.base+'/login')
+					this.$router.push(this.$router.options.base+'login')
 				}
 
 				if(err.response.status === 500) {

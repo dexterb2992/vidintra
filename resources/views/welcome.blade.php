@@ -10,11 +10,14 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset(mix('css/app.css')) }}">
     </head>
     <body>
+        <script>
+            window.base_url = "{{ env('VUE_BASE_URL') }}";
+        </script>
         <div id="root"></div>
         <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
-        <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
+        <script type="text/javascript" src="{{ asset(mix('js/app.js')) }}"></script>
     </body>
 </html>
