@@ -11,7 +11,7 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
 	mode: 'history',
-	base: '/',
+	base: window.base_url,
 	routes: [
 		{ path: '/video-intros/create', component: VideoIntroForm, meta: { mode: 'create' } },
 		{ path: '/video-intros/:id/edit', component: VideoIntroForm, meta: { mode: 'edit' } },
