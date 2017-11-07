@@ -29,10 +29,10 @@
 	                <!-- Right Side Of Navbar -->
 	                <ul class="nav navbar-nav navbar-right">
 	                    <li v-if="guest">
-	                        <router-link :to="$router.options.base+'login'">Login</router-link>
+	                        <router-link to="login'">Login</router-link>
 	                    </li>
 	                    <li v-if="guest">
-	                        <router-link :to="$router.options.base+'register'">Register</router-link>
+	                        <router-link to="register'">Register</router-link>
 	                    </li>
 	                    
 	                    <li class="navbar__item"  v-if="auth">
