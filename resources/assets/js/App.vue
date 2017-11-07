@@ -84,7 +84,7 @@
 				nprogress.done();
 				if(err.response.status === 401) {
 					Auth.remove()
-					this.$router.push('/login')
+					this.$router.push(this.$router.options.base+'/login')
 				}
 
 				if(err.response.status === 500) {
@@ -92,7 +92,7 @@
 				}
 
 				if(err.response.status === 404) {
-					this.$router.push('/not-found')
+					this.$router.push(this.$router.options.base+'not-found')
 				}
 			});
 
@@ -111,7 +111,7 @@
 	        });
 
 			Auth.initialize();
-			this.loggedUserName = Auth.state.user_name;
+			// this.loggedUserName = Auth.state.user_name;
 		},
 		data() {
 			return {
@@ -123,6 +123,7 @@
 		computed: {
 			auth() {
 				if(this.authState.api_token) {
+					this.loggedUserName = this.authState.user_name
 					return true
 				}
 				return false
@@ -133,13 +134,13 @@
 		},
 		methods: {
 			logout() {
-				post('/api/logout')
+				post(this.$router.options.base+'api/logout')
 				    .then((res) => {
 				        if(res.data.done) {
 				            // remove token
 				            Auth.remove()
 				            Flash.setSuccess('You have successfully logged out.')
-				            this.$router.push('/login')
+				            this.$router.push(this.$router.options.base+'/login')
 				        }
 				    })
 			}
@@ -149,3 +150,4 @@
 		}
 	}
 </script>
+

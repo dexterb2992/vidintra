@@ -1,7 +1,7 @@
 <template>
 	<div class="image">
 		<image-preview :preview="value" @close="$emit('input', null)"
-			 v-if="value"></image-preview>
+			 v-if="value" :baseUrl='baseUrl'></image-preview>
 		<div class="image__upload" v-else>
 			<input type="file" accept="image/*" @change="upload">
 		</div>
@@ -17,6 +17,9 @@
 			value: {
 			    type: [String, File],
 			    default: null
+			},
+			baseUrl: {
+				default: '/'
 			}
 		},
 		methods: {

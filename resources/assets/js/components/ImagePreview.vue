@@ -12,6 +12,9 @@
 			preview: {
 			    type: [String, File],
 			    default: null
+			},
+			baseUrl : {
+				default: '/'
 			}
 		},
 		data() {
@@ -37,7 +40,7 @@
 					}
 					fileReader.readAsDataURL(this.preview)
 				} else if (typeof this.preview === 'string') {
-					this.image = `/images/${this.preview}`
+					this.image = this.baseUrl+`images/${this.preview}`
 				} else {
 					this.image = null
 				}

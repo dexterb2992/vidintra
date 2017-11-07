@@ -70,13 +70,13 @@
             login() {
                 this.isProcessing = true
                 this.error = {}
-                post('api/login', this.form)
+                post(this.$router.options.base+'api/login', this.form)
                     .then((res) => {
                         if(res.data.authenticated) {
                             // set token
                             Auth.set(res.data.api_token, res.data.user_id, res.data.user_name)
                             Flash.setSuccess('You have successfully logged in.')
-                            this.$router.push('/')
+                            this.$router.push(this.$router.options.base);
                         }
                         this.isProcessing = false
                     })

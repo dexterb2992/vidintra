@@ -2,10 +2,10 @@
     <div>
         <div class="recipe__list">
             <div class="recipe__item" v-for="(intro, key) in intros">
-                <router-link class="recipe__inner" :to="`/video-intros/${intro.id}/edit`" :id="'item_'+key">
+                <router-link class="recipe__inner" :to="$router.options.base+`video-intros/${intro.id}/edit`" :id="'item_'+key">
                     <iframe width="298" height="240" :src="`//youtube.com/embed/${intro.youtube_id}`" v-if="intro.youtube_id != null && intro.youtube_id != ''"></iframe>
                     <video v-if="intro.video_source != '' && intro.video_source != null" width="298" height="240" controls>
-                        <source :src="`/videos/${intro.video_source}`" type="video/mp4">
+                        <source :src="$router.options.base+`videos/${intro.video_source}`" type="video/mp4">
                     </video>
                     <p class="recipe__name">{{intro.name}}</p>
                 </router-link>
@@ -31,7 +31,7 @@
             }
         },
         created() {
-            get('/api/video-intros')
+            get(this.$router.options.base+'api/video-intros')
                 .then((res) => {
                     this.intros = res.data.intros
                 })
@@ -41,7 +41,7 @@
             this.$on('delete', function (key) {
                 if (confirm("Are you sure to delete this?")) {
                     var id = this.intros[key].id;
-                    del('/api/video-intros/'+id)
+                    del(this.$router.options.base+'api/video-intros/'+id)
                         .then((res) => {
                             if(res.data.deleted) {
                                 Flash.setSuccess("Successfully deleted.")

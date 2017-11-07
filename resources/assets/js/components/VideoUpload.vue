@@ -3,7 +3,7 @@
         <label>Upload Video</label>
         <input type="file" accept="video/*" @change="upload">
         
-        <video-preview :preview="value" @close="$emit('input', null)"></video-preview>
+        <video-preview :preview="value" @close="$emit('input', null)" :baseUrl="baseUrl"></video-preview>
     </div>
 </template>
 
@@ -18,6 +18,9 @@ export default {
         value: {
             type: [String, File],
             default: null
+        },
+        baseUrl: {
+            default: '/'
         }
     },
     methods: {

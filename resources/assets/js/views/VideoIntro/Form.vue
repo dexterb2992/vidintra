@@ -24,9 +24,17 @@
                                 <small class="error__control" v-if="error.youtube_id">{{error.youtube_id[0]}}</small>
                             </div>
                             <div class="form-group" v-if="videoBaseSource=='Upload'">
-                                <video-upload v-model="form.video_source"></video-upload>
+                                <video-upload v-model="form.video_source" :baseUrl="$router.options.base"></video-upload>
                             </div>
                             <div class="form-group">
+                                <label>Action after video ends</label>
+                                <select v-model="form.action_after_end" class="form-control">
+                                    <option value="redirect">Redirect</option>
+                                    <option value="loop">Loop</option>
+                                </select>
+                                <small class="error__control" v-if="error.action_after_end">{{error.action_after_end[0]}}</small>
+                            </div>
+                            <div class="form-group" v-if="form.action_after_end == 'redirect'">
                                 <label>URL to Redirect</label>
                                 <input type="url" v-model="form.url_to_redirect" class="form-control">
                                 <small class="error__control" v-if="error.url_to_redirect">{{error.url_to_redirect[0]}}</small>
@@ -41,28 +49,20 @@
                                 <label>Logo</label>
                                 <div class="recipe__image">
                                     <div class="recipe__box">
-                                        <image-upload v-model="form.logo_img"></image-upload>
+                                        <image-upload v-model="form.logo_img" :baseUrl="$router.options.base"></image-upload>
                                         <small class="error__control" v-if="error.logo_img">{{error.image[0]}}</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Enable Skip Intro Text</label>
-                                <input type="checkbox" v-model="form.skipintro_is_enabled" value="0">
+                                <input type="checkbox" v-model="skipintro_is_enabled">
                                 <small class="error__control" v-if="error.skipintro_is_enabled">{{error.skipintro_is_enabled[0]}}</small>
                             </div>
-                            <div class="form-group" v-if="form.skipintro_is_enabled">
+                            <div class="form-group" v-if="skipintro_is_enabled">
                                 <label>Skip Intro Text</label>
                                 <input type="text" v-model="form.skipintro_text" class="form-control">
                                 <small class="error__control" v-if="error.skipintro_text">{{error.skipintro_text[0]}}</small>
-                            </div>
-                            <div class="form-group">
-                                <label>Action after video ends</label>
-                                <select v-model="form.action_after_end" class="form-control">
-                                    <option value="redirect">Redirect</option>
-                                    <option value="loop">Loop</option>
-                                </select>
-                                <small class="error__control" v-if="error.action_after_end">{{error.action_after_end[0]}}</small>
                             </div>
                         </tab>
                         <tab name="More Settings">
@@ -118,9 +118,10 @@
             return {
                 form: {},
                 error: {},
+                skipintro_is_enabled: false,
                 isProcessing: false,
-                initializeURL: `/api/video-intros/create`,
-                storeURL: `/api/video-intros`,
+                initializeURL: this.$router.options.base+`api/video-intros/create`,
+                storeURL: this.$router.options.base+`api/video-intros`,
                 action: 'Create',
                 videoBaseSource: '',
                 ckeditorToolbar: [[ 'Format', 'Bold', 'Link' ]]
@@ -128,31 +129,31 @@
         },
         created() {
             if(this.$route.meta.mode === 'edit') {
-                this.initializeURL = `/api/video-intros/${this.$route.params.id}/edit`
-                this.storeURL = `/api/video-intros/${this.$route.params.id}?_method=PUT`
+                this.initializeURL = this.$router.options.base+`api/video-intros/${this.$route.params.id}/edit`
+                this.storeURL = this.$router.options.base+`api/video-intros/${this.$route.params.id}?_method=PUT`
                 this.action = 'Update'
             }
 
-            this.previewUrl = `/video-intros/${this.$route.params.id}`;
+            this.previewUrl = this.$router.options.base+`video-intros/${this.$route.params.id}`;
 
             get(this.initializeURL).then((res) => {
                 Vue.set(this.$data, 'form', res.data.form);
+                this.skipintro_is_enabled = res.data.form.skipintro_is_enabled == 1 ? true : false;
 
                 if(this.$route.meta.mode == 'edit') {
                     if(res.data.form.video_source != "" && res.data.form.video_source != null) {
                         this.videoBaseSource = 'Upload';
-                        console.log(this.form.video_source);
                     }
 
                     if(res.data.form.youtube_id != "" && res.data.form.youtube_id != null) {
                         this.videoBaseSource = 'Youtube';
                     }
                 } else {
-                    if(res.data.form.bottom_text_left == null) {
+                    if(res.data.form.bottom_text_left == null || this.$route.meta.mode == 'create') {
                         res.data.form.bottom_text_left = '© Copyright 2017 – John Doe';
                     }
 
-                    if(res.data.form.bottom_text_right == null) {
+                    if(res.data.form.bottom_text_right == null || this.$route.meta.mode == 'create') {
                         res.data.form.bottom_text_right = `1-800-555-9274   your@email.com   <a href="http://facebook.com/your-fb-acct">Facebook</a>  <a href="http://twitter.com/your-twitter-acct">Twitter</a>`;
                     }
                 }
@@ -167,6 +168,12 @@
             save() {
                 this.form.bottom_text_right = CKEDITOR.instances['bottom_text_right'].getData();
                 this.form.bottom_text_left = CKEDITOR.instances['bottom_text_left'].getData();
+                this.form.skipintro_is_enabled = this.skipintro_is_enabled ? 1 : 0;
+                if (this.videoBaseSource == 'Upload'){
+                    this.form.youtube_id = null;
+                } else {
+                    this.form.video_source = null;
+                }
 
                 const form = toMultiPartedForm(this.form, this.$route.meta.mode)
                 post(this.storeURL, form)
@@ -180,6 +187,8 @@
                     .catch((err) => {
                         if(err.response.status === 422) {
                             this.error = err.response.data.errors
+                            Flash.setError(err.response.data.message)
+                            scrollToTop();
                         }
                         this.isProcessing = false
                     });
@@ -192,7 +201,9 @@
                     this.error.youtube_id = ['It must be a valid Youtube URL'];
                     youtubeId = null;
                 } else {
-                    this.error.splice(this.error.indexOf('youtube_id', 1));
+                    if (this.error.hasOwnProperty('youtube_id')) {
+                        delete this.error.youtube_id;
+                    }
                 }
 
                 this.form.youtube_id = youtubeId;

@@ -81,11 +81,11 @@
             register() {
                 this.isProcessing = true
                 this.error = {}
-                post('api/register', this.form)
+                post(this.$router.options.base+'api/register', this.form)
                     .then((res) => {
                         if(res.data.registered) {
                             Flash.setSuccess('Congratulations! You have now successfully registered.')
-                            this.$router.push('/login')
+                            this.$router.push(this.$router.options.base+'login')
                         }
                         this.isProcessing = false
                     })

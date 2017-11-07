@@ -39,11 +39,11 @@ class VideoIntro extends Model
                     ready: function ()
                     {
                         $(this).jPlayer("setMedia", {
-                            m4v: "<?= asset('videos/'.$intro->video_source) ?>",
-                            ogv: "<?= asset('videos/'.$intro->video_source) ?>"
+                            m4v: "<?= url('videos/'.$intro->video_source) ?>",
+                            ogv: "<?= url('videos/'.$intro->video_source) ?>"
                         }).jPlayer("play");;
                     },
-                    swfPath:  '<?= asset("swf/Jplayer.swf") ?>',
+                    swfPath:  '<?= url("swf/Jplayer.swf") ?>',
                     supplied: "m4v, ogv",
                     volume: <?= $intro->volume / 100 ?>,
                     nativeVideoControls: {

@@ -16,7 +16,6 @@ class VideoIntroController extends Controller
         $this->rules =  [
             'name' => 'required',
             'action_after_end' => 'required',
-            'url_to_redirect' => 'required|url',
             'skipintro_is_enabled' => 'required',
         ];
     }
@@ -47,9 +46,16 @@ class VideoIntroController extends Controller
     {
         $input = $request->all();
 
-        if ($request->skipintro_is_enabled == true) {
-            $request->skipintro_is_enabled = 1;
+        if ($request->skipintro_is_enabled == 'true') {
             $this->rules['skipintro_text'] = 'required';
+        } else {
+            unset($this->rules['skipintro_text']);
+        }
+
+        if ($request->action_after_end == 'redirect') {
+            $this->rules['url_to_redirect'] = 'required|url';
+        } else {
+            unset($this->rules['url_to_redirect']);
         }
 
         $this->validate($request, $this->rules);
@@ -59,7 +65,7 @@ class VideoIntroController extends Controller
                 return abort(404, 'Image not uploaded!');
             } else {
                 $filename = $this->getFileName($request->logo_img);
-                $request->logo_img->move(base_path('public/images'), $filename);
+                $request->logo_img->move(public_path('images'), $filename);
                 $input['logo_img'] = $filename;
             }
         }
@@ -69,7 +75,7 @@ class VideoIntroController extends Controller
                 return abort(404, 'Video not uploaded!');
             } else {
                 $filename = $this->getFileName($request->video_source);
-                $request->video_source->move(base_path('public/videos'), $filename);
+                $request->video_source->move(public_path('videos'), $filename);
                 $input['video_source'] = $filename;
             }
 
@@ -152,9 +158,16 @@ class VideoIntroController extends Controller
     {
         $input = $request->except(['_method']);
 
-        if ($request->skipintro_is_enabled == true) {
-            $request->skipintro_is_enabled = 1;
+        if ($request->skipintro_is_enabled == 'true') {
             $this->rules['skipintro_text'] = 'required';
+        } else {
+            unset($this->rules['skipintro_text']);
+        }
+
+        if ($request->action_after_end == 'redirect') {
+            $this->rules['url_to_redirect'] = 'required|url';
+        } else {
+            unset($this->rules['url_to_redirect']);
         }
 
         $this->validate($request, $this->rules);
@@ -164,18 +177,18 @@ class VideoIntroController extends Controller
                 return abort(404, 'Image not uploaded!');
             } else {
                 $filename = $this->getFileName($request->logo_img);
-                $request->logo_img->move(base_path('public/images'), $filename);
+                $request->logo_img->move(public_path('images'), $filename);
                 $input['logo_img'] = $filename;
 
                 // remove old image
                 if (!empty($videoIntro->logo_img)) {
-                    File::delete(base_path('/public/images/'.$videoIntro->logo_img));
+                    File::delete(public_path('images/'.$videoIntro->logo_img));
                 }
             }
         } else {
             // remove old image
             if (!empty($videoIntro->logo_img) && empty($input['logo_img'])) {
-                File::delete(base_path('/public/images/'.$videoIntro->logo_img));
+                File::delete(public_path('images/'.$videoIntro->logo_img));
             }
         }
         
@@ -184,12 +197,12 @@ class VideoIntroController extends Controller
                 return abort(404, 'Video not uploaded!');
             } else {
                 $filename = $this->getFileName($request->video_source);
-                $request->video_source->move(base_path('public/videos'), $filename);
+                $request->video_source->move(public_path('videos'), $filename);
                 $input['video_source'] = $filename;
 
                 // remove old image
                 if (!empty($videoIntro->video_source)) {
-                    File::delete(base_path('/public/videos/'.$videoIntro->video_source));
+                    File::delete(public_path('videos/'.$videoIntro->video_source));
                 }
             }
 

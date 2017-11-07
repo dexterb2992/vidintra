@@ -11,6 +11,9 @@
             preview: {
                 type: [String, File],
                 default: null
+            },
+            baseUrl: {
+                default: '/'
             }
         },
         data() {
@@ -20,6 +23,7 @@
         },
         created() {
             this.setPreview()
+            console.log("baseUrl: "+this.baseUrl);
         },
         watch: {
             'preview': 'setPreview'
@@ -27,12 +31,14 @@
         methods: {
 
             setPreview() {
+                console.log(this.preview);
                 if(this.preview instanceof File ) {
                     this.video = URL.createObjectURL(this.preview);
-                    $('.video-preview').parent()[0].load();
-
+                    console.log(this.video);
+                    // $('.video-preview').parent()[0].load();
+                    $(document).find('.video-holder')[0].load();
                 } else if (typeof this.preview === 'string') {
-                    this.video = `/videos/${this.preview}`
+                    this.video = `${this.baseUrl}videos/${this.preview}`
                 } else {
                     this.video = null
                 }
