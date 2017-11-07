@@ -85,7 +85,7 @@
                     .then((res) => {
                         if(res.data.registered) {
                             Flash.setSuccess('Congratulations! You have now successfully registered.')
-                            this.$router.push(this.$router.options.base+'login')
+                            this.$router.push('/login')
                         }
                         this.isProcessing = false
                     })
