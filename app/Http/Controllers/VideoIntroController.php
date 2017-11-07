@@ -144,7 +144,7 @@ class VideoIntroController extends Controller
             'font-weight' => '400',
             'font-family' => 'Arial, Helvetica, sans-serif',
             'font-size' => '12px'
-           );
+        );
 
         return view('show')->withVideoIntro($videoIntro);
     }
@@ -200,7 +200,7 @@ class VideoIntroController extends Controller
                 $request->video_source->move(public_path('videos'), $filename);
                 $input['video_source'] = $filename;
 
-                // remove old image
+                // remove old video
                 if (!empty($videoIntro->video_source)) {
                     File::delete(public_path('videos/'.$videoIntro->video_source));
                 }
@@ -208,7 +208,9 @@ class VideoIntroController extends Controller
 
             $input['youtube_id'] = null;
         } else {
-            $input['video_source'] = null;
+            if ($input['video_source'] == null || $input['video_source'] == "") {
+                $input['video_source'] = null;
+            }
         }
 
         

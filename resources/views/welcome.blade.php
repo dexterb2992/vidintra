@@ -9,12 +9,13 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
+        <link rel="stylesheet" href="//cdn.ckeditor.com/4.7.3/standard/contents.css?t=H8DA">
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
     </head>
     <body>
         <script>
-            window.base_url = "{{ env('VUE_BASE_URL') }}";
+            window.base_url = "{{ env('VUE_BASE_URL', '/') }}";
         </script>
         <div id="root"></div>
         <script src="//cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>

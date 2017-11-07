@@ -10,8 +10,9 @@
 <!--<![endif]-->
     <head>
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>Video Intro for PHP</title>
+        <title>{{ $videoIntro->title == '' ? 'Your awesome VidIntra title here' : $videoIntro->title }}</title>
 
+        <link rel="stylesheet" href="//cdn.ckeditor.com/4.7.3/standard/contents.css?t=H8DA">
         <link rel='stylesheet' href='{{asset("/css/themestrike_videointro.min.css")}}'/>
 
         <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
@@ -31,11 +32,16 @@
                 background-position: {{ $videoIntro->frame_border_bg['background-position'] }};
             }
             .vidintro-bottomtext,
-            .vidintro-bottomtext a {
+            /*.vidintro-bottomtext a {
                 color: {{ $videoIntro->bottom_text_typography['color'] }};
                 font-weight: {{ $videoIntro->bottom_text_typography['font-weight'] }};
                 font-family: {{ $videoIntro->bottom_text_typography['font-family'] }};
                 font-size: {{ $videoIntro->bottom_text_typography['font-size'] }};
+            }*/
+            .vidintro-bottomtext a{
+                color: #121517;
+                font-family: 'Arial, Helvetica, sans-serif';
+                font-size: 12px;
             }
             .vidintro-viewport {
                 border-radius: {{ $videoIntro->frame_border_radius }}px;

@@ -17,6 +17,7 @@ class VideoIntro extends Model
     {
         return [
             'name' => '',
+            'title' => '',
             'video_source' => '',
             'youtube_id' => '',
             'action_after_end' => '',

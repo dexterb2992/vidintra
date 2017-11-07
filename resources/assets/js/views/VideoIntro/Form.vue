@@ -3,7 +3,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h4>{{action}} Video Intro</h4>
-                <a class="btn btn-success pull-right btn-circle" data-toggle="tooltip" data-original-title="Preview" v-show="form.id != undefined" :href="previewUrl" target="_blank">
+                <a class="btn btn-success pull-right btn-circle" data-toggle="tooltip" data-original-title="See it in action" v-show="form.id != undefined" :href="previewUrl" target="_blank">
                     <i class="glyphicon glyphicon-eye-open"></i>
                 </a>
             </div>
@@ -20,7 +20,7 @@
                             </div>
                             <div class="form-group" v-if="videoBaseSource=='Youtube'">
                                 <label>Enter youtube URL: </label>
-                                <input class="form-control" type="text" v-model="form.youtube_id" @change="validateYoutubeId">
+                                <input class="form-control" type="text" v-model="form.youtube_id" @change="validateYoutubeId" placeholder="Enter a valid Youtube URL">
                                 <small class="error__control" v-if="error.youtube_id">{{error.youtube_id[0]}}</small>
                             </div>
                             <div class="form-group" v-if="videoBaseSource=='Upload'">
@@ -36,14 +36,18 @@
                             </div>
                             <div class="form-group" v-if="form.action_after_end == 'redirect'">
                                 <label>URL to Redirect</label>
-                                <input type="url" v-model="form.url_to_redirect" class="form-control">
+                                <input type="url" v-model="form.url_to_redirect" class="form-control" placeholder="Redirect URL after the video ends">
                                 <small class="error__control" v-if="error.url_to_redirect">{{error.url_to_redirect[0]}}</small>
                             </div>
                             <div class="form-group">
                                 <label>Name</label>
-                                <input type="text" v-model="form.name" class="form-control">
+                                <input type="text" v-model="form.name" class="form-control" placeholder="Give your intro some name">
                                 <small class="error__control" v-if="error.name">{{error.name[0]}}</small>
-
+                            </div>
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" v-model="form.title" class="form-control" placeholder="Your video intro's title">
+                                <small class="error__control" v-if="error.title">{{error.title[0]}}</small>
                             </div>
                             <div class="form-group">
                                 <label>Logo</label>
@@ -61,7 +65,7 @@
                             </div>
                             <div class="form-group" v-if="skipintro_is_enabled">
                                 <label>Skip Intro Text</label>
-                                <input type="text" v-model="form.skipintro_text" class="form-control">
+                                <input type="text" v-model="form.skipintro_text" class="form-control" placeholder="The text in your Skip button">
                                 <small class="error__control" v-if="error.skipintro_text">{{error.skipintro_text[0]}}</small>
                             </div>
                         </tab>
@@ -158,9 +162,21 @@
                     }
                 }
 
-                CKEDITOR.replace('bottom_text_right');
-                CKEDITOR.replace('bottom_text_left');
+                const ckconfig = {
+                    toolbarGroups: [
+                        { name: 'basicstyles'},
+                        { name: 'styles' },
+                        { name: 'colors'},
+                        { name: 'links' },
+                        '/',
+                        { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                        { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ] },
+                        { name: 'tools' }
+                    ]
+                };
 
+                CKEDITOR.replace('bottom_text_right', ckconfig);
+                CKEDITOR.replace('bottom_text_left', ckconfig);
                 $('[data-toggle="tooltip"]').tooltip();
             });
         },
