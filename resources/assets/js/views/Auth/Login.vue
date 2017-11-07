@@ -76,7 +76,7 @@
                             // set token
                             Auth.set(res.data.api_token, res.data.user_id, res.data.user_name)
                             Flash.setSuccess('You have successfully logged in.')
-                            this.$router.push(this.$router.options.base);
+                            this.$router.push('/');
                         }
                         this.isProcessing = false
                     })
