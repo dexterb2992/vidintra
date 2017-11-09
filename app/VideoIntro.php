@@ -70,7 +70,7 @@ class VideoIntro extends Model
     {
 
         ?>
-        <script src="http://www.youtube.com/player_api"></script>
+        <script src="//www.youtube.com/player_api"></script>
         <script>
 
             // create youtube player
@@ -85,7 +85,8 @@ class VideoIntro extends Model
                     controls: 0,
                     showinfo: 0 ,
                     modestbranding: 1,
-                    wmode: "opaque"
+                    wmode: "opaque",
+                    rel: 0
                   },
                   events: {
                     'onReady': onPlayerReady,
