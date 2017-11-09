@@ -86,7 +86,8 @@ class VideoIntro extends Model
                     showinfo: 0 ,
                     modestbranding: 1,
                     wmode: "opaque",
-                    rel: 0
+                    rel: 0,
+                    cc_load_policy: 3
                   },
                   events: {
                     'onReady': onPlayerReady,
