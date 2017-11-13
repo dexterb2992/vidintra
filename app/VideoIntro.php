@@ -28,6 +28,14 @@ class VideoIntro extends Model
             'skipintro_text' => '',
             'bottom_text_left' => '',
             'bottom_text_right' => '',
+
+            'frame_border_width' => 40,
+            'frame_border_radius' => 2,
+            'frame_border_bg_color' => '#FFFFFF',
+            'frame_border_bg_image' => '',
+            'frame_border_bg_position' => '',
+            'frame_border_bg_repeat' => '',
+            'frame_border_bg_size' => ''
         ];
     }
 

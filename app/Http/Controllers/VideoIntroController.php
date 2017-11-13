@@ -79,7 +79,18 @@ class VideoIntroController extends Controller
             $input['video_source'] = null;
         }
 
-        
+        if ($request->hasFile('frame_border_bg_image')) {
+            if (!$request->file('frame_border_bg_image')->isValid()) {
+                return abort(404, 'Frame border image not uploaded!');
+            } else {
+                $filename = $this->getFileName($request->frame_border_bg_image);
+                $request->frame_border_bg_image->move(public_path('images'), $filename);
+                $input['frame_border_bg_image'] = $filename;
+            }
+        } else {
+            $input['frame_border_bg_image'] = '';
+        }
+
         $input['skipintro_is_enabled'] = (int) $request->skipintro_is_enabled;
         $input['user_id'] = auth()->guard('api')->user()->id;
 
@@ -114,15 +125,16 @@ class VideoIntroController extends Controller
         /**
          * Frame Options
          */
-        $videoIntro->frame_border_width = 40; //in pixels
-        $videoIntro->frame_border_radius = 2; //in pixels
-        $videoIntro->frame_border_bg = array(
-            'background-color' => '#FFFFFF',
-            'background-image' => '',//url
-            'background-repeat' => '',
-            'background-attachment' => '',
-            'background-position' => ''
-           );
+
+        // $videoIntro->frame_border_width = 40; //in pixels
+        // $videoIntro->frame_border_radius = 2; //in pixels
+        // $videoIntro->frame_border_bg = array(
+        //     'background-color' => '#FFFFFF',
+        //     'background-image' => '',//url
+        //     'background-repeat' => '',
+        //     'background-attachment' => '',
+        //     'background-position' => ''
+        //    );
 
         /**
          * Skip Intro Button Options
@@ -178,6 +190,20 @@ class VideoIntroController extends Controller
             // remove old image
             if (!empty($videoIntro->logo_img) && empty($input['logo_img'])) {
                 File::delete(public_path('images/'.$videoIntro->logo_img));
+            }
+        }
+
+        if ($request->hasFile('frame_border_bg_image')) {
+            if (!$request->file('frame_border_bg_image')->isValid()) {
+                return abort(404, 'Logo image not uploaded!');
+            } else {
+                $filename = $this->getFileName($request->frame_border_bg_image);
+                $request->frame_border_bg_image->move(public_path('images'), $filename);
+                $input['frame_border_bg_image'] = $filename;
+            }
+        } else {
+            if (!empty($videoIntro->frame_border_bg_image) && empty($input['frame_border_bg_image'])) {
+                File::delete(public_path('images/'.$videoIntro->frame_border_bg_image));
             }
         }
         

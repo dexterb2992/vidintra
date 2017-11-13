@@ -25,19 +25,14 @@
                 margin-left:{{ $videoIntro->logo_margin['margin-left'] }};
             }
             body.vidintro-body {
-                background-color:{{ $videoIntro->frame_border_bg['background-color'] }};
-                background-image: {{ $videoIntro->frame_border_bg['background-image'] }};
-                background-repeat: {{ $videoIntro->frame_border_bg['background-repeat'] }};
-                background-attachment: {{ $videoIntro->frame_border_bg['background-attachment'] }};
-                background-position: {{ $videoIntro->frame_border_bg['background-position'] }};
+                background-color:{{ $videoIntro->frame_border_bg_color }};
+                background-image: {{ $videoIntro->frame_border_bg_image != "" && !is_null($videoIntro->frame_border_bg_image) ? 'url('.asset('images/'.$videoIntro->frame_border_bg_image).')' : ''}};
+                background-repeat: {{ $videoIntro->frame_border_bg_repeat }};
+                /*background-attachment: '';*/
+                background-size: {{ $videoIntro->frame_border_bg_size  }};
+                background-position: {{ $videoIntro->frame_border_bg_position }};
             }
             .vidintro-bottomtext,
-            /*.vidintro-bottomtext a {
-                color: {{ $videoIntro->bottom_text_typography['color'] }};
-                font-weight: {{ $videoIntro->bottom_text_typography['font-weight'] }};
-                font-family: {{ $videoIntro->bottom_text_typography['font-family'] }};
-                font-size: {{ $videoIntro->bottom_text_typography['font-size'] }};
-            }*/
             .vidintro-bottomtext a{
                 color: #121517;
                 font-family: 'Arial, Helvetica, sans-serif';
@@ -78,7 +73,7 @@
         <input id="vidintro-height" type="hidden" value="{!! str_replace('px', '', $videoIntro->video_size_height) !!}">
         <input id="vidintro-videofit" type="hidden" value="{!! $videoIntro->video_fit !!}">
 
-        @if('transparent' == $videoIntro->frame_border_bg['background-color']) 
+        @if('transparent' == $videoIntro->frame_border_bg_color) 
             <input id="vidintro-frameborderwidth" type="hidden" value="0">
         @else 
             <input id="vidintro-frameborderwidth" type="hidden" value="{{ $videoIntro->frame_border_width }}">

@@ -54,7 +54,7 @@
                                 <div class="recipe__image">
                                     <div class="recipe__box">
                                         <image-upload v-model="form.logo_img" :baseUrl="$router.options.base"></image-upload>
-                                        <small class="error__control" v-if="error.logo_img">{{error.image[0]}}</small>
+                                        <small class="error__control" v-if="error.logo_img">{{error.logo_img[0]}}</small>
                                     </div>
                                 </div>
                             </div>
@@ -81,7 +81,72 @@
                                 <textarea class="form-control" v-model="form.bottom_text_left" id="bottom_text_left"></textarea>
                                 <small class="error__control" v-if="error.bottom_text_left">{{error.bottom_text_left[0]}}</small>
                             </div>
-                           
+                            
+                            <div class="form-group">
+                                <legend>Frame Border Settings</legend>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Width</label>
+                                        <input type="number" v-model="form.frame_border_width" class="form-control" placeholder="width (in pixels)">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Radius</label>
+                                        <input type="number" v-model="form.frame_border_radius" class="form-control" placeholder="radius (in pixels)">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Background color</label>
+                                        <div id="bg_color" class="input-group colorpicker-component">
+                                            <input type="text" v-model="form.frame_border_bg_color" class="form-control" />
+                                            <span class="input-group-addon"><i></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Background image</label>
+                                <div class="recipe__image">
+                                    <div class="recipe__box">
+                                        <image-upload v-model="form.frame_border_bg_image" :baseUrl="$router.options.base"></image-upload>
+                                        <small class="error__control" v-if="error.frame_border_bg_image">{{error.frame_border_bg_image[0]}}</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Background position</label>
+                                        <select v-model="form.frame_border_bg_position" class="form-control">
+                                            <option :value="value" v-text="value" v-for="(value, key) in frame_border_bg_position"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Background repeat</label>
+                                        <select v-model="form.frame_border_bg_repeat" class="form-control">
+                                            <option :value="value" v-text="value" v-for="(value, key) in frame_border_bg_repeat"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Background repeat</label>
+                                        <select v-model="form.frame_border_bg_size" class="form-control">
+                                            <option :value="value" v-text="value" v-for="(value, key) in frame_border_bg_size"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </tab>
                     </tabs>
                 </form>
@@ -128,7 +193,10 @@
                 storeURL: this.$router.options.base+`api/video-intros`,
                 action: 'Create',
                 videoBaseSource: '',
-                ckeditorToolbar: [[ 'Format', 'Bold', 'Link' ]]
+                ckeditorToolbar: [[ 'Format', 'Bold', 'Link' ]],
+                frame_border_bg_position: ['bottom', 'top', 'right', 'center', 'unset'],
+                frame_border_bg_repeat: ['repeat', 'no-repeat', 'repeat-x', 'repeat-y', 'unset'],
+                frame_border_bg_size: ['auto', 'contain', 'cover', 'unset']
             }
         },
         created() {
@@ -177,7 +245,38 @@
 
                 CKEDITOR.replace('bottom_text_right', ckconfig);
                 CKEDITOR.replace('bottom_text_left', ckconfig);
+
+                /*CKEDITOR.editorConfig = function( config ) {
+                    config.toolbarGroups = [
+                        { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                        { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+                        { name: 'links', groups: [ 'links' ] },
+                        { name: 'insert', groups: [ 'insert' ] },
+                        { name: 'forms', groups: [ 'forms' ] },
+                        { name: 'tools', groups: [ 'tools' ] },
+                        { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+                        { name: 'others', groups: [ 'others' ] },
+                        '/',
+                        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+                        { name: 'styles', groups: [ 'styles' ] },
+                        { name: 'colors', groups: [ 'colors' ] },
+                        { name: 'about', groups: [ 'about' ] }
+                    ];
+
+                    config.removeButtons = 'Underline,Image,Table,HorizontalRule,SpecialChar,Source,RemoveFormat,NumberedList,BulletedList,Indent,Outdent,About';
+                };
+
+                CKEDITOR.replace('bottom_text_right');
+                CKEDITOR.replace('bottom_text_left');*/
+                
                 $('[data-toggle="tooltip"]').tooltip();
+                var _this = this;
+                $('#bg_color').colorpicker({
+                    color: this.form.frame_border_bg_color
+                }).on('changeColor', function (e) {
+                    _this.form.frame_border_bg_color = e.color.toHex();
+                });
             });
         },
         methods: {
