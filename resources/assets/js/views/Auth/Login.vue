@@ -39,7 +39,7 @@
                             <div class="col-md-8 col-md-offset-4">
                                 <button :disabled="isProcessing" class="btn btn-primary">Login</button>
 
-                                <a class="btn btn-link" href="#">
+                                <a class="btn btn-link" href="password/reset">
                                     Forgot Your Password?
                                 </a>
                             </div>
@@ -82,7 +82,11 @@
                     })
                     .catch((err) => {
                         if(err.response.status === 422) {
-                            this.error = err.response.data
+                            if(err.response.data.hasOwnProperty('errors')){
+                                this.error = err.response.data.errors
+                            }else{
+                                this.error = err.response.data
+                            }
                         }
                         this.isProcessing = false
                     })

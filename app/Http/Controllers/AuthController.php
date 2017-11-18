@@ -91,7 +91,6 @@ class AuthController extends Controller
 
     public function licenseKeyIsValid()
     {
-        //$this->data['license_key']
         $client = new \GuzzleHttp\Client();
         $url = 'http://topdogimsolutions.com/licensing/?pl_type=video_intro&licensekey='.$this->data['license_key']
             .'&domainname='.$_SERVER['HTTP_HOST'].'&email='.$this->data['email'];

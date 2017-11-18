@@ -1,4 +1,4 @@
-# Single Page Application with Laravel 5.5 and Vue.js 2 - Video Intro
+# Semi-Single Page Application with Laravel 5.5 and Vue.js 2 - Video Intro
 
 ### Frameworks and Libraries:
 
