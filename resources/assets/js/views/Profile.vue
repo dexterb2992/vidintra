@@ -93,9 +93,9 @@
                 post(this.initializeURL, this.form)
                     .then((res) => {
                         if(res.data.success) {
-                            Flash.setSuccess(res.data.message)
-                            localStorage.setItem('user_name', this.form.name)
-                            this.$emit('profile-updated', this.form.name);
+                            Flash.setSuccess(res.data.message);
+                            localStorage.setItem('user_name', this.form.name);
+                            this.$router.app.$emit('profile-updated');
                             this.error = {};
                             scrollToTop();
                         }

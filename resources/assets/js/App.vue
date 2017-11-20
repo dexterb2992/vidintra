@@ -100,14 +100,14 @@
 				}
 			});
 
-			axios.interceptors.request.use(function (config) {
+			axios.interceptors.request.use((config) => {
 	            nprogress.start();
 	            return config;
 	        }, function (error) {
 	            return Promise.reject(error);
 	        });
 	        
-	        axios.interceptors.response.use(function (response) {
+	        axios.interceptors.response.use((response) => {
 	            nprogress.done();
 	            return response;
 	        }, function (error) {
@@ -115,8 +115,13 @@
 	        });
 
 			Auth.initialize();
-			this.$on('profile-update', (userName) => {
-				console.log('profile-update...');
+			this.$router.app.$on('profile-update', () => {
+				console.log('listening profile-update this.$router...');
+				this.loggedUserName = localStorage.getItem('user_name');
+			});
+
+			this.$on('profile-update', () => {
+				console.log('listening profile-update this...');
 				this.loggedUserName = localStorage.getItem('user_name');
 			});
 		},
