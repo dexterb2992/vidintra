@@ -245,30 +245,6 @@
 
                 CKEDITOR.replace('bottom_text_right', ckconfig);
                 CKEDITOR.replace('bottom_text_left', ckconfig);
-
-                /*CKEDITOR.editorConfig = function( config ) {
-                    config.toolbarGroups = [
-                        { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-                        { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-                        { name: 'links', groups: [ 'links' ] },
-                        { name: 'insert', groups: [ 'insert' ] },
-                        { name: 'forms', groups: [ 'forms' ] },
-                        { name: 'tools', groups: [ 'tools' ] },
-                        { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-                        { name: 'others', groups: [ 'others' ] },
-                        '/',
-                        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-                        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-                        { name: 'styles', groups: [ 'styles' ] },
-                        { name: 'colors', groups: [ 'colors' ] },
-                        { name: 'about', groups: [ 'about' ] }
-                    ];
-
-                    config.removeButtons = 'Underline,Image,Table,HorizontalRule,SpecialChar,Source,RemoveFormat,NumberedList,BulletedList,Indent,Outdent,About';
-                };
-
-                CKEDITOR.replace('bottom_text_right');
-                CKEDITOR.replace('bottom_text_left');*/
                 
                 $('[data-toggle="tooltip"]').tooltip();
                 var _this = this;

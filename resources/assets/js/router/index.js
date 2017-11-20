@@ -6,6 +6,7 @@ import Register from '../views/Auth/Register.vue'
 import NotFound from '../views/NotFound.vue'
 import VideoIntroIndex from '../views/VideoIntro/Index.vue'
 import VideoIntroForm from '../views/VideoIntro/Form.vue'
+import Profile from '../views/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -19,6 +20,7 @@ const router = new VueRouter({
 		{ path: '/', component: VideoIntroIndex },
 		{ path: '/register', component: Register },
 		{ path: '/login', component: Login },
+		{ path: '/profile', component: Profile},
 		{ path: '/not-found', component: NotFound },
 		{ path: '*', component: NotFound },
 	]

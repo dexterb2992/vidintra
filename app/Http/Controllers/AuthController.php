@@ -27,7 +27,7 @@ class AuthController extends Controller
         ]);
 
         $validator->after(function ($validator) {
-            if (!$this->licenseKeyIsValid()) {
+            if (!validateLicense($this->data['license_key'], $this->data['email'])) {
                 $validator->errors()->add('license_key', "Invalid license.");
             }
         });

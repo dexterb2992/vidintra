@@ -45,8 +45,11 @@
 	                        </a>
 
 	                        <ul class="dropdown-menu" role="menu">
+	                        	<li>
+	                        		<router-link to="/profile">Profie</router-link>
+	                        	</li>
 	                            <li>
-	                                <a @click.stop="logout">Logout</a>
+	                                <a @click.stop="logout" style="cursor:pointer;">Logout</a>
 	                            </li>
 	                        </ul>
 	                    </li>
@@ -112,7 +115,10 @@
 	        });
 
 			Auth.initialize();
-			// this.loggedUserName = Auth.state.user_name;
+			this.$on('profile-update', (userName) => {
+				console.log('profile-update...');
+				this.loggedUserName = localStorage.getItem('user_name');
+			});
 		},
 		data() {
 			return {
